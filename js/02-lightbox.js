@@ -1,33 +1,35 @@
-import { galleryItems } from './gallery-items.js';
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
 console.log(galleryItems);
 
-const gallery = document.querySelector('.gallery');
-const galleryItemsRef = document.createElement('ul')
-galleryItemsRef.classList = "gallery"
+const gallery = document.querySelector(".gallery");
+const galleryItemsRef = document.createElement("ul");
+galleryItemsRef.classList = "gallery";
 
-const items = galleryItems.map(({ preview, original, description }) => {
-	const liEl = document.createElement('li')
-	const imgEL = document.createElement('img')
-	const linkEl = document.createElement('a')
+const items = galleryItems
+  .map(({ preview, original, description }) => {
+    const galleryItems = `
+	<li class="gallery__item">
+		<a 
+		href="${original}"
+		class="gallery__link">
+			<img
+			src="${preview}"
+			alt="${description}"
+			data-sourse="${original}"
+			class="gallery__image"/>
+		</a>
+	</li>`;
 
-	liEl.classList = 'gallery__item';
-	linkEl.classList = 'gallery__link'
-	linkEl.href = original
-	
-	imgEL.src = preview
-	imgEL.dataset.sourse= original
-	imgEL.alt = description
-	imgEL.classList = 'gallery__image'
+    return galleryItems;
+  })
+  .join("");
 
-	linkEl.append(imgEL)
-	liEl.append(linkEl)
+console.log();
+gallery.insertAdjacentHTML("afterbegin", items);
 
-	return liEl
-})
-
-galleryItemsRef.append(...items)
-gallery.append(galleryItemsRef)
-
-let lightbox = new SimpleLightbox('.gallery a', { captionsData: 'alt', captionDelay: 250 });
+let lightbox = new SimpleLightbox(".gallery a", {
+  captionsData: "alt",
+  captionDelay: 250,
+});
