@@ -1,7 +1,7 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
 
-console.log(galleryItems);
+// console.log(galleryItems);
 
 const gallery = document.querySelector(".gallery");
 const galleryItemsRef = document.createElement("ul");
@@ -31,28 +31,27 @@ gallery.insertAdjacentHTML("afterbegin", items);
 
 gallery.addEventListener("click", onGallery);
 
+const instance = basicLightbox.create(`<img>`, {
+  onShow: onKeyDownStart,
+});
+
 function onGallery(e) {
   e.preventDefault();
   if (e.target.nodeName === "IMG") {
-    lightBoxInit(e).show();
+    console.log(e.target.dataset.sourse);
+    instance.element().innerHTML = `<img src="${e.target.dataset.sourse}" >`;
+    instance.show();
   }
 }
-function lightBoxInit(e) {
-  const instance = basicLightbox.create(
-    `<img src="${e.target.dataset.sourse}" width="800" height="600">`,
-    { onShow: onKeyDownStart }
-  );
-  function onKeyDownStart() {
-    document.addEventListener("keydown", onItemShow);
-  }
 
-  function onItemShow(e) {
-    console.log(e.code);
-    if (e.code === "Escape") {
-      instance.close();
-      document.removeEventListener("keydown", onItemShow);
-    }
-  }
+function onKeyDownStart() {
+  document.addEventListener("keydown", onItemShow);
+}
 
-  return instance;
+function onItemShow(e) {
+  console.log(e.code);
+  if (e.code === "Escape") {
+    instance.close();
+    document.removeEventListener("keydown", onItemShow);
+  }
 }
