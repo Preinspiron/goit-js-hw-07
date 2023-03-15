@@ -32,7 +32,7 @@ gallery.insertAdjacentHTML("afterbegin", items);
 gallery.addEventListener("click", onGallery);
 
 const instance = basicLightbox.create(`<img>`, {
-  onShow: onKeyDownStart,
+  onClose: () => document.removeEventListener("keydown", onItemShow),
 });
 
 function onGallery(e) {
@@ -41,17 +41,12 @@ function onGallery(e) {
     console.log(e.target.dataset.sourse);
     instance.element().innerHTML = `<img src="${e.target.dataset.sourse}" >`;
     instance.show();
+    document.addEventListener("keydown", onItemShow);
   }
-}
-
-function onKeyDownStart() {
-  document.addEventListener("keydown", onItemShow);
 }
 
 function onItemShow(e) {
   console.log(e.code);
-  if (e.code === "Escape") {
-    instance.close();
-    document.removeEventListener("keydown", onItemShow);
-  }
+  if (e.code === "Escape")
+    instance.close(() => console.log("Еще и тут можно вешать"));
 }
